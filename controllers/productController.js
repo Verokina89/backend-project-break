@@ -43,8 +43,8 @@ const showProducts = async (req, res) => {
         if (products.length === 0) {
             return res.status(404).send('No existen productos disponibles');
         }
-        const html = getProductCardsRender(products); //Generar el HTML con las tarjetas de productos
-        res.send(generateHtml(getNavBarRender() + html)); //cierra las etiqutas html de la baseHtml al dar respuesta generada
+        const html = getProductCards(products); //Generar el HTML con las tarjetas de productos
+        res.send(generateHtml(getNavBar() + html)); //cierra las etiqutas html de la baseHtml al dar respuesta generada
     } catch (err) {
         console.error(err); //log error 
         res.status(500).send('Server Error');
