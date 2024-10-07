@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+
+//crga vaiables de entorno
 dotenv.config();
 
 const dbConnection = async() => {
@@ -13,6 +15,7 @@ const dbConnection = async() => {
     }
 };
 
-module.exports = {
-    dbConnection,
+module.exports = { 
+    dbConnection
 };
+    
