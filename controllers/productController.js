@@ -72,7 +72,7 @@ const showProductById = async (req, res) => {
 
 // Mostrar el formulario para crear un nuevo producto
 const showNewProduct = (req, res) => {
-    res.send(generateHtml(renderProductForm())); //renderiz formulario vacio
+    res.send(generateHtml(renderProductForm())); //renderiza formulario vacio
 };
   
 // Crear producto nuevo
