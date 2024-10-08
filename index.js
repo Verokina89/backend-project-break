@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 4500;
 const { dbConnection } = require('./config/db')
 const methodOverride = require('method-override')
 const productRoutes = require('./routes/productRoutes')
+const path = require('path')
 
 const app = express()
 //carga variables de entorno

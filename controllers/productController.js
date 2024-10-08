@@ -1,9 +1,18 @@
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
-const { generateHtml, getProductCards, getNavBar} = require('../public/utils/html');
-//function para validar ObjectId de MongoDB
-const { isValidObjectId } = require('mongoose');
+const { baseHtml, generateHtml, getProductCards, getNavBar} = require('../public/utils/html');
 
+// const baseHtml = `
+// <!DOCTYPE html>
+// <html lang="en">
+// <head>
+//     <meta charset="UTF-8">
+//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+//     <title>Product List</title>
+//     <link rel="stylesheet" href="../public/styles.css">
+// </head>
+// <body>
+// `;
 
 // Funciones del controlador de productos
 const ProductController = {
@@ -14,7 +23,7 @@ const ProductController = {
             if (products.length === 0) {
                 return res.status(404).send('No existen productos disponibles');
             }
-            const html = getProductCards(products); // Generar el HTML con las tarjetas de productos
+            const html = baseHtml + getProductCards(products); // Generar el HTML con las tarjetas de productos
             res.send(generateHtml(getNavBar() + html)); // Cerrar las etiquetas HTML de la base
         } catch (err) {
             console.error(err); //log de error
@@ -24,22 +33,27 @@ const ProductController = {
 
     //mostra un producto por ID
     showProductById: async (req, res) => {
-        const { productId } = req.params;  //de aqi se obtene el _id desd los params
-
-        if (!isValidObjectId(productId)) {
-            return res.status(400).send('ID no válido');
-        }
+        // console.log("Entrando en showProductById");
         try {
+            // Obtener el productId de los parámetros de la ruta
+            const { productId }  = req.params;
+            console.log("ID:", productId);
+
+            //buscar el producto por su ID
             const product = await Product.findById(productId);
+
             if (!product) {
-                return res.status(404).send('Producto no encontrado');
+                return res.status(404).send('Product not found');
             }
 
             const html = `<div>${product.name} - ${product.price}</div>`;
-            res.send(generateHtml(html)); //cierra la etiqueta HTML base
+            res.send(generateHtml(html));
+            //con JSON:
+            // res.json(product);
         } catch (err) {
+            // Capturar cualquier error y devolver un error de servidor
             console.error(err);
-            res.status(500).send('Server Error');
+            res.status(500).send('Server error');
         }
     },
 
@@ -55,26 +69,30 @@ const ProductController = {
     
             // Verificar que los campos esenciales estén presentes
             if (!name || !price || !description) {
-                return res.status(400).send('Todos los campos son requeridos.');
+                return res.status(400).send('All fields are required');
             }
     
             // Crear el nuevo producto
             const newProduct = new Product(req.body);
             await newProduct.save();
-            res.redirect(`/products/${newProduct._id}`);
+            //mensaje éxito con el nuevo producto
+        res.status(200).json({
+            message: 'Product created successfully',
+            product: newProduct // Devuelve el producto creado
+        })    
+            // res.redirect(`/products/${newProduct._id}`);
         } catch (err) {
             console.error(err);
-            res.status(500).send('Error en el servidor');
+            res.status(500).send('Server error');
         }
     },
-    
 
     //muestra el formulario de edit para producto existente
     showEditProduct: async (req, res) => {
         try {
             const product = await Product.findById(req.params.productId);
             if (!product) {
-                return res.status(404).send('Producto no ha sido encontrado');
+                return res.status(404).send('Product not found');
             }
             res.send(generateHtml(renderProductForm(product)));
         } catch (err) {
@@ -228,8 +246,6 @@ module.exports = {
 
 
 ----------------------------------------------------------------------
-
-
 
    createProduct: async (req, res) => {
         try {

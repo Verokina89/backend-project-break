@@ -9,16 +9,16 @@ const ProductController = require('../controllers/productController');
 // Rutas publicas
 router.get('/products', ProductController.showProducts);
 
-router.get('/:productId/', ProductController.showProductById);
+router.get('/:productId', ProductController.showProductById);
 
-// //rutas del dashboard, lista de productos que pueden gstionarse(necesita la autenticación del bonus, es decir, rutas de admin)
+// ---> van dentro de authRouts ---->//rutas del dashboard, lista de productos que pueden gstionarse(necesita la autenticación del bonus, es decir, rutas de admin)
 router.get('/dashboard', ProductController.showProducts);
 
 router.get('/dashboard/new', ProductController.showNewProduct);
 
 router.post('/dashboard/create', ProductController.createProduct);
 
-router.get('/dashboard/:productId/edit', ProductController.showEditProduct);
+// router.get('/dashboard/:productId/edit', ProductController.showEditProduct);
 
 // router.put('/dashboard/:productId', ProductController.updateProduct);
 
