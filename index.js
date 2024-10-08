@@ -22,8 +22,8 @@ dbConnection()
 app.use('/', productRoutes)
 app.use('/dashboard', productRoutes)
 
-// // // Ruta  ignorar favicon.ico
-// app.get('/favicon.ico', (req, res) => res.status(204))
+// // Ruta  ignorar favicon.ico
+app.get('/favicon.ico', (req, res) => res.status(204))
 
 app.listen(PORT, () => {
     console.log(`Server started on port http://localhost:${PORT}/`)

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
-const { generateHtml, getProductCards, getNavBar} = require('../public/utils/html');
+const { generateHtml, getProductCards, getNavBar} = require('../utils/html');
 //function para validar ObjectId de MongoDB
 // const { isValidObjectId } = require('mongoose');
 
