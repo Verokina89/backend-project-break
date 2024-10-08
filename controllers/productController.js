@@ -1,24 +1,8 @@
-const mongoose = require('mongoose');
-const Product = require('../models/Product');
+const mongoose = require('mongoose')
+const Product = require('../models/Product')
+const { generateHtml, getProductCards, getNavBar} = require('../public/utils/html')
 //function para validar ObjectId de MongoDB
-const { isValidObjectId } = require('mongoose');
-
-// const baseHtml = `
-// <!DOCTYPE html>
-// <html lang="en">
-// <head>
-//     <meta charset="UTF-8">
-//     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-//     <title>Product List</title>
-//     <link rel="stylesheet" href="../public/styles.css">
-// </head>
-// <body>
-// `;
-
-// //function para generar HTML base
-// const generateHtml = (content) => {
-//     return baseHtml + content + '</body></html>';
-// };
+// const { isValidObjectId } = require('mongoose');
 
 
 // Funciones del controlador de productos
@@ -63,16 +47,16 @@ const ProductController = {
     // },
 
     // // Crear un producto nuevo
-    // createProduct: async (req, res) => {
-    //     try {
-    //         const newProduct = new Product(req.body);
-    //         await newProduct.save();
-    //         res.redirect('/');
-    //     } catch (err) {
-    //         console.error(err);
-    //         res.status(500).send('Server Error');
-    //     }
-    // },
+    createProduct: async (req, res) => {
+        try {
+            const newProduct = new Product(req.body);
+            await newProduct.save();
+            res.redirect('/');
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Server Error');
+        }
+    },
 
     // //muestra el formulario de edit para producto existente
     // showEditProduct: async (req, res) => {

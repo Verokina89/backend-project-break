@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const mongoose = require('mongoose')
+const dotenv = require('dotenv')
 
 //crga vaiables de entorno
-dotenv.config();
+dotenv.config()
 
 const dbConnection = async() => {
     try {
