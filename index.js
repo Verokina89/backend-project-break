@@ -6,24 +6,19 @@ const methodOverride = require('method-override')
 const productRoutes = require('./routes/productRoutes')
 
 const app = express()
-
 //carga variables de entorno
 dotenv.config()
 
 //Middlewares
 app.use(express.json())  
 app.use(express.urlencoded({ extended: true }))
-// app.use(express.static('public')) //servir archivos estaticos como CSS e imágenes
-// app.use(methodOverride('_method')) //soportar PUT y DELETE en formularios
+app.use(express.static('public')) //servir archivos estaticos como CSS e imágenes
+app.use(methodOverride('_method')) //soportar PUT y DELETE en formularios
 
 //Conexión a la base de datos MongoDB
 dbConnection()
 
 //Ruta de productos
-// app.get('/', (eq, res) => {
-//     res.send('<h1>Bienvenido<h1>')
-// });
-
 app.use('/', productRoutes)
 app.use('/dashboard', productRoutes)
 
