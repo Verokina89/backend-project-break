@@ -4,17 +4,17 @@ const Product = require('../models/Product')
 //importar las funcione del controllador d productos
 const ProductController = require('../controllers/productController');
 // Importar el middleware de autenticación (BONUS)
-const { authMiddleware } = require('../middlewares/authMiddleware');
+// const { authMiddleware } = require('../middlewares/authMiddleware');
 
 // Rutas publicas
-router.get('/products', authMiddleware, ProductController.showProducts);
+router.get('/products', ProductController.showProducts);
 
 // router.get('/:productId', ProductController.showProductById);
 
 // //rutas del dashboard, lista de productos que pueden gstionarse(necesita la autenticación del bonus, es decir, rutas de admin)
 // router.get('/dashboard', ProductController.showProducts);
 // router.get('/dashboard/new', authMiddleware, ProductController.showNewProduct);
-router.post('/dashboard/create', authMiddleware, ProductController.createProduct);
+router.post('/dashboard/create', ProductController.createProduct);
 // router.get('/dashboard/:productId/edit', ProductController.showEditProduct);
 // router.put('/dashboard/:productId', ProductController.updateProduct);
 // router.delete('/dashboard/:productId/delete', ProductController.deleteProduct);
