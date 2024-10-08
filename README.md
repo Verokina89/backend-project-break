@@ -24,15 +24,15 @@ Vamos a crear la estructura de archivos que vamos a necesitar para el proyecto.
 ```
 .
 ├── config
-│   ├── db.js
+│   ├── db.js  ------>(ok)
 │   └── firebase.js (BONUS)
 ├── controllers
-│   ├── productController.js
+│   ├── productController.js ------>(ok)
 │   └── authController.js (BONUS)
 ├── models
-│   └── Product.js
+│   └── Product.js ------>(ok)
 ├── routes
-│   └── productRoutes.js
+│   └── productRoutes.js ------>(ok)
 │   └── authRoutes.js (BONUS)
 ├── middlewares (BONUS)
 │   └── authMiddleware.js
@@ -42,7 +42,7 @@ Vamos a crear la estructura de archivos que vamos a necesitar para el proyecto.
 ├── public
 │   ├── styles.css
 │   └── images (OPCIONAL)
-├── .env
+├── .env  (ok)
 └── package.json
 
 ```
