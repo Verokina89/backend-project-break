@@ -75,7 +75,7 @@ const ProductController = {
             // Crear el nuevo producto
             const newProduct = new Product(req.body);
             await newProduct.save();
-            //mensaje éxito con el nuevo producto
+            //mensaje creacion del nuevo producto con exito
         res.status(200).json({
             message: 'Product created successfully',
             product: newProduct // Devuelve el producto creado
