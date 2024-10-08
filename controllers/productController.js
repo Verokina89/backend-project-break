@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Product = require('../models/Product')
 const { generateHtml, getProductCards, getNavBar} = require('../public/utils/html');
 //function para validar ObjectId de MongoDB
-// const { isValidObjectId } = require('mongoose');
+const { isValidObjectId } = require('mongoose');
 
 
 // Funciones del controlador de productos
@@ -24,14 +24,16 @@ const ProductController = {
 
     //mostra un producto por ID
     showProductById: async (req, res) => {
-        const { productId } = req.params;
+        const { productId } = req.params;  //de aqi se obtene el _id desd los params
 
         if (!isValidObjectId(productId)) {
             return res.status(400).send('ID no válido');
         }
         try {
             const product = await Product.findById(productId);
-            if (!product) return res.status(404).send('Producto no encontrado');
+            if (!product) {
+                return res.status(404).send('Producto no encontrado');
+            }
 
             const html = `<div>${product.name} - ${product.price}</div>`;
             res.send(generateHtml(html)); //cierra la etiqueta HTML base
@@ -59,7 +61,7 @@ const ProductController = {
             // Crear el nuevo producto
             const newProduct = new Product(req.body);
             await newProduct.save();
-            res.redirect('/');
+            res.redirect(`/products/${newProduct._id}`);
         } catch (err) {
             console.error(err);
             res.status(500).send('Error en el servidor');
@@ -67,19 +69,19 @@ const ProductController = {
     },
     
 
-    // //muestra el formulario de edit para producto existente
-    // showEditProduct: async (req, res) => {
-    //     try {
-    //         const product = await Product.findById(req.params.productId);
-    //         if (!product) {
-    //             return res.status(404).send('Producto no ha sido encontrado');
-    //         }
-    //         res.send(generateHtml(renderProductForm(product)));
-    //     } catch (err) {
-    //         console.error(err);
-    //         res.status(500).send('Server Error');
-    //     }
-    // },
+    //muestra el formulario de edit para producto existente
+    showEditProduct: async (req, res) => {
+        try {
+            const product = await Product.findById(req.params.productId);
+            if (!product) {
+                return res.status(404).send('Producto no ha sido encontrado');
+            }
+            res.send(generateHtml(renderProductForm(product)));
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Server Error');
+        }
+    },
 
     // //actualiza el producto existente
     // updateProduct: async (req, res) => {
@@ -89,7 +91,7 @@ const ProductController = {
     //                 new: true 
     //             }
     //         );
-    //         res.redirect('/');
+    //         res.redirect('`/products/${newProduct._id}`');
     //     } catch (err) {
     //         console.error(err);
     //         res.status(500).send('Server Error');

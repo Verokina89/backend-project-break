@@ -1,4 +1,3 @@
-//Definimos el modelo "Product" utizando Mongoose en "models/Product.js"
 const mongoose = require('mongoose');
 
 const ProductSchema = new mongoose.Schema({
@@ -16,7 +15,7 @@ const ProductSchema = new mongoose.Schema({
     },
     category: { 
         type: String, 
-        enum: ['Camisetas', 'Accesorios'], 
+        enum: ['Camisetas', 'Accesorios', 'Sweters'], 
         required: true 
     },
     size: { 
