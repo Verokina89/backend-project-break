@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
-const { generateHtml, getProductCards, getNavBar} = require('../utils/html');
+const { generateHtml, getProductCards, getNavBar} = require('../public/utils/html');
 //function para validar ObjectId de MongoDB
 // const { isValidObjectId } = require('mongoose');
 
@@ -22,41 +22,50 @@ const ProductController = {
         }
     },
 
-    // //mostra un producto por ID
-    // showProductById: async (req, res) => {
-    //     const { productId } = req.params;
+    //mostra un producto por ID
+    showProductById: async (req, res) => {
+        const { productId } = req.params;
 
-    //     if (!isValidObjectId(productId)) {
-    //         return res.status(400).send('ID no válido');
-    //     }
-    //     try {
-    //         const product = await Product.findById(productId);
-    //         if (!product) return res.status(404).send('Producto no encontrado');
-
-    //         const html = `<div>${product.name} - ${product.price}</div>`;
-    //         res.send(generateHtml(html)); //cierra la etiqueta HTML base
-    //     } catch (err) {
-    //         console.error(err);
-    //         res.status(500).send('Server Error');
-    //     }
-    // },
-
-    // //muestra el formulario de creación de producto
-    // showNewProduct: (req, res) => {
-    //     res.send(generateHtml(renderProductForm())); // Renderizar formulario vacio
-    // },
-
-    // // Crear un producto nuevo
-    createProduct: async (req, res) => {
+        if (!isValidObjectId(productId)) {
+            return res.status(400).send('ID no válido');
+        }
         try {
-            const newProduct = new Product(req.body);
-            await newProduct.save();
-            res.redirect('/');
+            const product = await Product.findById(productId);
+            if (!product) return res.status(404).send('Producto no encontrado');
+
+            const html = `<div>${product.name} - ${product.price}</div>`;
+            res.send(generateHtml(html)); //cierra la etiqueta HTML base
         } catch (err) {
             console.error(err);
             res.status(500).send('Server Error');
         }
     },
+
+    // //muestra el formulario de creación de producto
+    showNewProduct: (req, res) => {
+        res.send(generateHtml(renderProductForm())); // Renderizar formulario vacio
+    },
+
+    // // Crear un producto nuevo
+    createProduct: async (req, res) => {
+        try {
+            const { name, price, description } = req.body;
+    
+            // Verificar que los campos esenciales estén presentes
+            if (!name || !price || !description) {
+                return res.status(400).send('Todos los campos son requeridos.');
+            }
+    
+            // Crear el nuevo producto
+            const newProduct = new Product(req.body);
+            await newProduct.save();
+            res.redirect('/');
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Error en el servidor');
+        }
+    },
+    
 
     // //muestra el formulario de edit para producto existente
     // showEditProduct: async (req, res) => {
@@ -214,5 +223,21 @@ module.exports = {
     showEditProduct, updateProduct, 
     deleteProduct 
 };
+
+
+----------------------------------------------------------------------
+
+
+
+   createProduct: async (req, res) => {
+        try {
+            const newProduct = new Product(req.body);
+            await newProduct.save();
+            res.redirect('/');
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Server Error');
+        }
+    },
 
 */
