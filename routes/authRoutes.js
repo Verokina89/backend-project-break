@@ -1,25 +1,20 @@
-// const express = require('express');
-// const router = express.Router();
-// const ProductController = require('../controllers/productController');
-// // const authController = require('../controllers/authController');
+const express = require('express');
+const router = express.Router();
+const authController = require('../controllers/authController'); // Verifica que esta ruta sea correcta
+
+// ---> van dentro de authRouts ---->//rutas del dashboard, lista de productos que pueden gstionarse(necesita la autenticación del bonus, es decir, rutas de admin)
+router.get('/dashboard', authController.showDashboard); //Mostrar el dashboard con los productos
 
 
-// //rutas del dashboard, lista de productos que pueden gstionarse(necesita la autenticación del bonus, es decir, rutas de admin)
-// router.get('/dashboard', showProducts);
+router.get('/new', authController.showNewProduct); // Mostrar formulario de nuevo producto
 
-// //rutas del dashboard para crear un producto(gestión de productos), que muestra un formulario(vista) para agregar un producto nuevo
-// router.get('/dashboard/new', showNewProduct); 
+router.post('/create', authController.createProduct); // Crear nuevo producto
 
-// //crea un producto nuevo en la base de datos
-// router.post('/dashboard', createProduct); 
+// router.get('/dashboard/:productId/edit', ProductController.showEditProduct); // Mostrar formulario de edición
 
-// //Formulario para editar un producto
-// router.get('/dashboard/:productId/edit', showEditProduct); 
+// router.put('/dashboard/:productId', ProductController.updateProduct); // Actualizar producto
 
-// //actualiza un producto por su ID
-// router.put('/dashboard/:productId', updateProduct); 
+// router.delete('/dashboard/:productId/delete', ProductController.deleteProduct); // Eliminar producto
 
-// //elimina un producto por su ID
-// router.delete('/dashboard/:productId/delete', deleteProduct); 
 
-// module.exports = router;
+module.exports = router;

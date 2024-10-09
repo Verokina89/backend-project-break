@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
-const { baseHtml, generateHtml, getProductCards, getNavBar} = require('../public/utils/html');
+const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm } = require('../public/utils/html');
 
 // const baseHtml = `
 // <!DOCTYPE html>
@@ -13,6 +13,23 @@ const { baseHtml, generateHtml, getProductCards, getNavBar} = require('../public
 // </head>
 // <body>
 // `;
+
+//genera el formulario de productos (crear/editar)
+// const renderProductForm = (product = {}) => {
+//     return `
+//         <form action="${product._id ? `/dashboard/${product._id}?_method=PUT` : '/dashboard/create'}" method="POST">
+//             <input type="text" name="name" value="${product.name || ''}" placeholder="Nombre del producto" required>
+//             <input type="text" name="description" value="${product.description || ''}" placeholder="Descripción" required>
+//             <input type="text" name="image" value="${product.image || ''}" placeholder="URL de la imagen" required>
+//             <input type="text" name="category" value="${product.category || ''}" placeholder="Categoría" required>
+//             <input type="text" name="size" value="${product.size || ''}" placeholder="Talla" required>
+//             <input type="number" name="price" value="${product.price || ''}" placeholder="Precio" required>
+//             <button type="submit">${product._id ? 'Actualizar' : 'Crear'} Producto</button>
+//         </form>
+//     `;
+// };
+
+
 
 // Funciones del controlador de productos
 const ProductController = {
@@ -36,10 +53,10 @@ const ProductController = {
         // console.log("Entrando en showProductById");
         try {
             // Obtener el productId de los parámetros de la ruta
-            const { productId }  = req.params;
+            const productId  = req.params;
             console.log("ID:", productId);
 
-            //buscar el producto por su ID
+            //buscar el producto por su ID y los obtiene de la bbdd
             const product = await Product.findById(productId);
 
             if (!product) {
@@ -48,7 +65,7 @@ const ProductController = {
 
             const html = `<div>${product.name} - ${product.price}</div>`;
             res.send(generateHtml(html));
-            //con JSON:
+            // // con JSON:
             // res.json(product);
         } catch (err) {
             // Capturar cualquier error y devolver un error de servidor
@@ -57,74 +74,7 @@ const ProductController = {
         }
     },
 
-    // //muestra el formulario de creación de producto
-    showNewProduct: (req, res) => {
-        res.send(generateHtml(renderProductForm())); // Renderizar formulario vacio
-    },
-
-    // // Crear un producto nuevo
-    createProduct: async (req, res) => {
-        try {
-            const { name, price, description } = req.body;
     
-            // Verificar que los campos esenciales estén presentes
-            if (!name || !price || !description) {
-                return res.status(400).send('All fields are required');
-            }
-    
-            // Crear el nuevo producto
-            const newProduct = new Product(req.body);
-            await newProduct.save();
-            //mensaje creacion del nuevo producto con exito
-        res.status(200).json({
-            message: 'Product created successfully',
-            product: newProduct // Devuelve el producto creado
-        })    
-            // res.redirect(`/products/${newProduct._id}`);
-        } catch (err) {
-            console.error(err);
-            res.status(500).send('Server error');
-        }
-    },
-
-    //muestra el formulario de edit para producto existente
-    showEditProduct: async (req, res) => {
-        try {
-            const product = await Product.findById(req.params.productId);
-            if (!product) {
-                return res.status(404).send('Product not found');
-            }
-            res.send(generateHtml(renderProductForm(product)));
-        } catch (err) {
-            console.error(err);
-            res.status(500).send('Server Error');
-        }
-    },
-
-    // //actualiza el producto existente
-    // updateProduct: async (req, res) => {
-    //     try {
-    //         await Product.findByIdAndUpdate(
-    //             req.params.productId, req.body, { 
-    //                 new: true 
-    //             }
-    //         );
-    //         res.redirect('`/products/${newProduct._id}`');
-    //     } catch (err) {
-    //         console.error(err);
-    //         res.status(500).send('Server Error');
-    //     }
-    // },
-
-    // //elimina un producto
-    // deleteProduct: async (req, res) => {
-    //     try {
-    //         await Product.findByIdAndDelete(req.params.productId);
-    //         res.redirect('/');
-    //     } catch (err) {
-    //         res.status(500).send('Server Error');
-    //     }
-    // }
 };
 
 module.exports = ProductController;

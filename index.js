@@ -4,7 +4,8 @@ const PORT = process.env.PORT || 4500;
 const { dbConnection } = require('./config/db')
 const methodOverride = require('method-override')
 const productRoutes = require('./routes/productRoutes')
-const path = require('path')
+const authRoutes = require('./routes/authRoutes')  //importa rutas admin (dashboard)
+// const path = require('path')
 
 const app = express()
 //carga variables de entorno
@@ -19,12 +20,11 @@ app.use(methodOverride('_method')) //soportar PUT y DELETE en formularios
 //Conexión a la base de datos MongoDB
 dbConnection()
 
-//Ruta de productos
+//Ruta publica
 app.use('/', productRoutes)
-app.use('/dashboard', productRoutes)
+// Rutas de admin (dashboard)
+app.use('/dashboard', authRoutes)
 
-// // Ruta  ignorar favicon.ico
-app.get('/favicon.ico', (req, res) => res.status(204))
 
 app.listen(PORT, () => {
     console.log(`Server started on port http://localhost:${PORT}/`)
