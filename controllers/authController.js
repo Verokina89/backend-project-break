@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
-const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm } = require('../public/utils/html');
+const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm, productDetailsHtml, showButtons, deleteFunction } = require('../public/utils/html');
 
 const authController = {
     showDashboard: async (req, res) => {
@@ -30,7 +30,39 @@ const authController = {
         }
     },
 
-// //muestra el formulario de creación de producto
+    showDashboardById: async (req, res) => {
+        // console.log("Entrando en showProductById");
+        try {
+            // Obtener el productId de los parámetros de la ruta
+            const { productId }  = req.params;
+            console.log("ID:", productId);
+
+            //buscar el producto por su ID y los obtiene de la bbdd
+            const product = await Product.findById(productId);
+
+            if (!product) {
+                return res.status(404).send('Product not found');
+            }
+
+            //botones editar y borrar para ese producto
+            const buttons = showButtons(true, productId);
+
+            //HTML productos con los detalles,y los botones
+            const html = generateHtml(`
+                ${getNavBar()}
+                ${productDetailsHtml(product)}
+                ${buttons} 
+            `);
+            // Enviar el HTML generado al cliente
+            res.send(html);
+        } catch (err) {
+            // Capturar cualquier error y devolver un error de servidor
+            console.error(err);
+            res.status(500).send('Server error');
+        }
+    },
+
+    //devuelve el formulario de creación de producto
     showNewProduct: (req, res) => {
         res.send(generateHtml(renderProductForm())); // Renderizar formulario vacio
     },
@@ -61,45 +93,49 @@ const authController = {
         }
     },
 
-    //muestra el formulario de edit para producto existente
-    showEditProduct: async (req, res) => {
+     //muestra el formulario de edit para producto existente
+     showEditProduct: async (req, res) => {
         try {
             const product = await Product.findById(req.params.productId);
             if (!product) {
                 return res.status(404).send('Product not found');
             }
-            res.send(generateHtml(renderProductForm(product)));
+            //genera el formulario con los datos del producto existentes
+            const html = generateHtml(renderProductForm(product));
+            res.send(html);
         } catch (err) {
             console.error(err);
             res.status(500).send('Server Error');
         }
     },
 
-    // //actualiza el producto existente
-    // updateProduct: async (req, res) => {
-    //     try {
-    //         await Product.findByIdAndUpdate(
-    //             req.params.productId, req.body, { 
-    //                 new: true 
-    //             }
-    //         );
-    //         res.redirect('`/products/${newProduct._id}`');
-    //     } catch (err) {
-    //         console.error(err);
-    //         res.status(500).send('Server Error');
-    //     }
-    // },
+
+    //actualiza el producto existente
+    updateProduct: async (req, res) => {
+        try {
+            const updateProduct = await Product.findByIdAndUpdate(
+                req.params.productId, 
+                req.body, 
+                { new: true }
+            );
+            console.log(updateProduct);
+            res.redirect(`/dashboard/${updateProduct._id}`);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Server Error');
+        }
+    },
 
     // //elimina un producto
-    // deleteProduct: async (req, res) => {
-    //     try {
-    //         await Product.findByIdAndDelete(req.params.productId);
-    //         res.redirect('/');
-    //     } catch (err) {
-    //         res.status(500).send('Server Error');
-    //     }
-    // }
+    deleteProduct: async (req, res) => {
+        try {
+            await Product.findByIdAndDelete(req.params.productId);
+            res.redirect('/');
+        } catch (err) {
+            res.status(500).send('Server Error');
+        }
+    }
 
 };
 
-module.exports = authController
+module.exports = authController;

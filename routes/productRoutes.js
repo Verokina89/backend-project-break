@@ -6,12 +6,12 @@ const ProductController = require('../controllers/productController');
 // Importar el middleware de autenticación (BONUS)
 // const { authMiddleware } = require('../middlewares/authMiddleware');
 
-// Rutas publicas
+// Rutas publicas                            PENDING RUTAS DE LOGIN
 router.get('/', ProductController.showProducts);
+
+//rutas por categorias: camisetas, sweters, accesoios y login
 
 router.get('/products/:productId', ProductController.showProductById);
 
 
 module.exports = router;
-
-
