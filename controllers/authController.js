@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
-const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm, productDetailsHtml, showButtons, deleteFunction } = require('../public/utils/html');
+const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm, productDetailsHtml, showButtons, deleteFunction,groupByCategory, showProductButtons } = require('../public/utils/html');
 
 const authController = {
     showDashboard: async (req, res) => {
@@ -10,23 +10,21 @@ const authController = {
             
             // Validar si existen productos
             if (!products || products.length === 0) {
-                return res.status(404).send('No se encontraron productos');
+                return res.status(404).send('No products found');
             }
     
-            // Generar las tarjetas de productos para mostrar en el dashboard
-            const productCards = getProductCards(products);
-            
+            //genera las tarjetas de los productos para mostrar en el dashboard pasando true
+            const productCards = getProductCards(products,true);
             // Crear el HTML completo con el navbar y las tarjetas de productos
             const html = generateHtml(`
                 ${getNavBar()}
                 ${productCards}
             `);
-    
             // Enviar el HTML generado al cliente
             res.send(html);
         } catch (error) {
             console.error(error);
-            res.status(500).send('Error al obtener los productos');
+            res.status(500).send('Error obtaining the products');
         }
     },
 

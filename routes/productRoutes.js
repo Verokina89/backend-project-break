@@ -7,7 +7,17 @@ const ProductController = require('../controllers/productController');
 // const { authMiddleware } = require('../middlewares/authMiddleware');
 
 // Rutas publicas                            PENDING RUTAS DE LOGIN
-router.get('/', ProductController.showProducts);
+// router.get('/', ProductController.showProducts.);
+router.get('/', ProductController.showProductsByCategory);
+
+
+//ruta por categorias
+//camisetas
+
+//Sweters 
+
+//Accesorios
+
 
 //rutas por categorias: camisetas, sweters, accesoios y login
 

@@ -1,19 +1,57 @@
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
-const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm, productDetailsHtml } = require('../public/utils/html');
+const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm, productDetailsHtml, groupByCategory, showProductButtons } = require('../public/utils/html');
 
 
 // Funciones del controlador de productos
 const ProductController = {
     // Mostrar todos los productos
-    showProducts: async (req, res) => {
+    // showProducts : async (req, res) => {
+    //     try {
+    //         //obtiene todos productos
+    //         const products = await Product.find(); 
+    //         // Validar si existen productos
+    //         if (products.length === 0) {
+    //             return res.status(404).send('There are no products available');
+    //         }
+    //         const html = baseHtml + getProductCards(products); // Generar el HTML con las tarjetas de productos
+    //         res.send(generateHtml(getNavBar() + html)); // Cerrar las etiquetas HTML de la base
+    //     } catch (err) {
+    //         console.error(err); //log de error
+    //         res.status(500).send('Server Error');
+    //     }
+    // },
+
+    showProductsByCategory : async (req, res) => {
         try {
-            const products = await Product.find(); //obtiene todos productos
+            //obtiene todos los productos
+            const products = await Product.find(); 
+            // Validar si existen productos
             if (products.length === 0) {
-                return res.status(404).send('No existen productos disponibles');
+                return res.status(404).send('There are no products available');
             }
-            const html = baseHtml + getProductCards(products); // Generar el HTML con las tarjetas de productos
-            res.send(generateHtml(getNavBar() + html)); // Cerrar las etiquetas HTML de la base
+            // Agrupar productos por categoría
+            const categories = groupByCategory(products);
+            // Generar HTML para cada categoría con sus productos
+            let htmlContent = '';
+            for (const category in categories) {
+                const categoryProducts = categories[category];
+                const productCards = getProductCards(categoryProducts);
+                // Agregar el nombre de la categoría y las tarjetas de productos al contenido HTML
+                htmlContent += `
+                    <h2>${category}</h2>
+                    <div class="category-products" style="display: flex;flex-direction: row; flex-wrap: wrap; justify-content: center; margin-bottom: 20px;">
+                    ${productCards}
+                    </div>
+                `;
+            }
+            //crea HTML completo; con navbar y el contenido de cada categorías
+            const html = generateHtml(`
+                ${getNavBar()}
+                ${htmlContent}
+            `);
+            // Enviar el HTML generado al cliente
+            res.send(html);
         } catch (err) {
             console.error(err); //log de error
             res.status(500).send('Server Error');

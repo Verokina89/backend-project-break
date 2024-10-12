@@ -116,7 +116,7 @@ Vamos a crear las rutas CRUD para los productos. Al usar formularios html, las r
 - GET /dashboard/:productId: Devuelve el detalle de un producto en el dashboard.   ----------> OK
 - PUT /dashboard/:productId: Actualiza un producto. ----------> OK
 - GET /dashboard/:productId/edit: Devuelve el formulario para editar un producto.   ----------> OK
-- DELETE /dashboard/:productId/delete: Elimina un producto.  
+- DELETE /dashboard/:productId/delete: Elimina un producto.  ------------> OK
 
 ## Creación de controladores
 
