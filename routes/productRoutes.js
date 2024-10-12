@@ -9,7 +9,7 @@ const ProductController = require('../controllers/productController');
 
 
 // Ruta para mostrar productos filtrados por categoría
-router.get('/categories/:category', ProductController.showProductsByCategory);
+router.get('/category/:category', ProductController.showProductsByCategory);
 
 //rutas por Id
 router.get('/products/:productId', ProductController.showProductById);
