@@ -10,17 +10,12 @@ const ProductController = require('../controllers/productController');
 // router.get('/', ProductController.showProducts.);
 router.get('/', ProductController.showProductsByCategory);
 
+// // Rutas para mostrar productos agrupados por categoría
+// router.get('/products/camisetas', ProductController.showProductsByCategory('Camisetas'));
+// router.get('/products/sweters', ProductController.showProductsByCategory('Sweters'));
+// router.get('/products/accesorios', ProductController.showProductsByCategory('Accesorios'));
 
-//ruta por categorias
-//camisetas
-
-//Sweters 
-
-//Accesorios
-
-
-//rutas por categorias: camisetas, sweters, accesoios y login
-
+//rutas por Id
 router.get('/products/:productId', ProductController.showProductById);
 
 

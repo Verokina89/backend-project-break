@@ -5,23 +5,8 @@ const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm, p
 
 // Funciones del controlador de productos
 const ProductController = {
-    // Mostrar todos los productos
-    // showProducts : async (req, res) => {
-    //     try {
-    //         //obtiene todos productos
-    //         const products = await Product.find(); 
-    //         // Validar si existen productos
-    //         if (products.length === 0) {
-    //             return res.status(404).send('There are no products available');
-    //         }
-    //         const html = baseHtml + getProductCards(products); // Generar el HTML con las tarjetas de productos
-    //         res.send(generateHtml(getNavBar() + html)); // Cerrar las etiquetas HTML de la base
-    //     } catch (err) {
-    //         console.error(err); //log de error
-    //         res.status(500).send('Server Error');
-    //     }
-    // },
 
+    //muestra los productos agrupados por categoria
     showProductsByCategory : async (req, res) => {
         try {
             //obtiene todos los productos
@@ -39,10 +24,10 @@ const ProductController = {
                 const productCards = getProductCards(categoryProducts);
                 // Agregar el nombre de la categoría y las tarjetas de productos al contenido HTML
                 htmlContent += `
-                    <h2>${category}</h2>
-                    <div class="category-products" style="display: flex;flex-direction: row; flex-wrap: wrap; justify-content: center; margin-bottom: 20px;">
-                    ${productCards}
-                    </div>
+                        <h2 style="text-align: center; margin-bottom: 10px;">${category}</h2>
+                        <div class="category-products" style="display: flex; flex-wrap: wrap; justify-content: space-around; gap: 20px; margin-bottom: 20px;">
+                            ${productCards}
+                        </div>
                 `;
             }
             //crea HTML completo; con navbar y el contenido de cada categorías
@@ -65,18 +50,30 @@ const ProductController = {
             // Obtener el productId de los parámetros de la ruta
             const { productId } = req.params;
             console.log("ID:", productId);
-
+            // Verificar si el productId es un ObjectId válido
+            if (!mongoose.Types.ObjectId.isValid(productId)) {
+                return res.status(400).send('Invalid product ID');
+            }
             //buscar el producto por su ID y los obtiene de la bbdd
             const product = await Product.findById(productId);
-
             if (!product) {
                 return res.status(404).send('Product not found');
             }
-
-            const html = `<div>${product.name} - ${product.price}</div>`;
-            res.send(generateHtml(productDetailsHtml));
-            // // con JSON:
-            // res.json(product);
+            // Crear HTML con los detalles del producto
+            const productHtml = `
+                <div style="text-align: center; padding: 20px;">
+                    <h2>${product.name}</h2>
+                    <img src="${product.image}" alt="${product.name}" style="max-width: 300px; margin-bottom: 20px;">
+                    <p>Precio: $${product.price}</p>
+                    <p>Descripción: ${product.description}</p>
+                </div>
+            `;
+            // Enviar la respuesta con el HTML generado
+            const html = generateHtml(`
+                ${getNavBar()}
+                ${productHtml}
+            `);
+            res.send(html);
         } catch (err) {
             // Capturar cualquier error y devolver un error de servidor
             console.error(err);
@@ -84,7 +81,44 @@ const ProductController = {
         }
     },
 
-    
 };
 
 module.exports = ProductController;
+
+
+
+
+/*
+//ruta para mostrar solo las categorias '/'
+    showCategories : async (req, res) => {
+        try {
+            // Obtener todas las categorías únicas desde la base de datos
+            const products = await Product.find();
+            const categories = [...new Set(products.map(product => product.category))]; // Obtener categorías únicas
+    
+            // Generar tarjetas para cada categoría
+            const categoryCards = categories.map(category => `
+                <div class="category-card" style="border: 2px solid #ddd; padding: 20px; margin: 10px; border-radius: 6px; text-align: center;">
+                    <h3>${category}</h3>
+                    <a href="/category/${category}">
+                        <button style="padding: 10px 40px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer;">Ver</button>
+                    </a>
+                </div>
+            `).join('');
+    
+            // Generar HTML completo con navbar y las tarjetas de categoría
+            const html = generateHtml(`
+                ${getNavBar()}
+                <h1>Categorías</h1>
+                <div class="categories-container" style="display: flex; justify-content: center; flex-wrap: wrap;">
+                    ${categoryCards}
+                </div>
+            `);
+    
+            res.send(html);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error al cargar las categorías');
+        }
+    },
+*/

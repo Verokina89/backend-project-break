@@ -108,6 +108,8 @@ La talla será un string que podrá ser "XS", "S", "M", "L", "XL".
 Vamos a crear las rutas CRUD para los productos. Al usar formularios html, las rutas serán de tipo GET y POST.
  Las rutas deberían tener una estructura similar a esta:
 
+-GET / : Home. Productos Agrupados por categoria.  -----> OK
+
 - GET /products: Devuelve todos los productos. Cada producto tendrá un enlace a su página de detalle. -------> OK
 - GET /products/:productId: Devuelve el detalle de un producto. -------> OK
 - GET /dashboard: Devuelve el dashboard del administrador. En el dashboard aparecerán todos los artículos que se hayan subido. Si clickamos en uno de ellos nos llevará a su página para poder actualizarlo o eliminarlo. ----------> OK
