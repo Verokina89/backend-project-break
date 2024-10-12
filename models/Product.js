@@ -15,7 +15,7 @@ const ProductSchema = new mongoose.Schema({
     },
     category: { 
         type: String, 
-        enum: ['Camisetas', 'Sweters', 'Accesorios'], 
+        enum: ['camisetas', 'sweters', 'accesorios'], 
         required: true 
     },
     size: { 
@@ -25,7 +25,14 @@ const ProductSchema = new mongoose.Schema({
     },
     price: { 
         type: Number, 
-        required: true },
+        required: true 
+    },
+    // stock: { 
+    //     type: Number, 
+    //     required: true 
+    // },
+
+
 }, { timestamps: true });
 
 ProductSchema.index({nombre: 1}); //Crea un indice en el campo "nombre" del producto en la funcion 'PoductSchema'. Lo que hace es señalar que el indice sera en orden ascendente (y -1 para descendete ) permitiendo mejorar la busqueda (en base al tiempo de respuesta rápida) cuando se usan los metodo find(), findOne() u otras (solo en nombre)
