@@ -6,15 +6,17 @@ const ProductController = require('../controllers/productController');
 
 // Rutas publicas
 // router.get('/', ProductController.showProducts.);
-
+//ruta para mostrar todos los productosraiz(home)
+router.get('/', ProductController.showProductsByCategory); 
 
 // Ruta para mostrar productos filtrados por categoría
 router.get('/category/:category', ProductController.showProductsByCategory);
 
+//ruta a Login
+
+
 //rutas por Id
 router.get('/products/:productId', ProductController.showProductById);
 
-//ruta para mostrar todos los productosraiz(home)
-router.get('/', ProductController.showProductsByCategory); 
 
 module.exports = router;

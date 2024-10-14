@@ -15,11 +15,11 @@ const ProductSchema = new mongoose.Schema({
     },
     category: { 
         type: String, 
-        enum: ['Camisetas', 'Sweters', 'Accesorios'], 
+        enum: ['T-shirts', 'Sweters', 'Accessories', 'Snack'], 
         required: true 
     },
     size: { 
-        type: String, 
+        type: String,
         enum: ['XS', 'S', 'M', 'L', 'XL', 'xs', 's', 'm', 'l', 'xl'], 
         required: true 
     },

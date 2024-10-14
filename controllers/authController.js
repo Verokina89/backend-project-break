@@ -12,15 +12,14 @@ const authController = {
             if (!products || products.length === 0) {
                 return res.status(404).send('No products found');
             }
-    
-            //genera las tarjetas de los productos para mostrar en el dashboard pasando true
-            const productCards = getProductCards(products,true);
-            // Crear el HTML completo con el navbar y las tarjetas de productos
+            //genera las tarjetas de productos agrupados por categria para mostrar en el dashboard pasando false
+            const productCards = getProductCards(products, false);
+            //HTML completo con navbar y las tarjetas de productos
             const html = generateHtml(`
                 ${getNavBar()}
                 ${productCards}
             `);
-            // Enviar el HTML generado al cliente
+            //muestra HTML
             res.send(html);
         } catch (error) {
             console.error(error);
@@ -28,28 +27,24 @@ const authController = {
         }
     },
 
-    showDashboardById: async (req, res) => {
+    dashboardById: async (req, res) => {
         // console.log("Entrando en showProductById");
         try {
             // Obtener el productId de los parámetros de la ruta
             const { productId }  = req.params;
             console.log("ID:", productId);
-
             //buscar el producto por su ID y los obtiene de la bbdd
             const product = await Product.findById(productId);
-
             if (!product) {
                 return res.status(404).send('Product not found');
             }
-
-            //botones editar y borrar para ese producto
-            const buttons = showButtons(true, productId);
+            const productCards = getProductCards([product], true);
 
             //HTML productos con los detalles,y los botones
             const html = generateHtml(`
                 ${getNavBar()}
                 ${productDetailsHtml(product)}
-                ${buttons} 
+                ${productCards} 
             `);
             // Enviar el HTML generado al cliente
             res.send(html);
@@ -137,3 +132,31 @@ const authController = {
 };
 
 module.exports = authController;
+
+
+/*
+ showDashboard: async (req, res) => {
+        try {
+            // Obtener todos los productos de la base de datos
+            const products = await Product.find();
+            
+            // Validar si existen productos
+            if (!products || products.length === 0) {
+                return res.status(404).send('No products found');
+            }
+    
+            //genera las tarjetas de los productos para mostrar en el dashboard pasando true
+            const productCards = getProductCards(products,true);
+            // Crear el HTML completo con el navbar y las tarjetas de productos
+            const html = generateHtml(`
+                ${getNavBar()}
+                ${productCards}
+            `);
+            // Enviar el HTML generado al cliente
+            res.send(html);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error obtaining the products');
+        }
+    },
+*/
