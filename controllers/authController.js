@@ -1,9 +1,12 @@
 // const mongoose = require('mongoose')
+const express = require('express');
+const router = express.Router();
 const Product = require('../models/Product')
 const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm, productDetailsHtml, showButtons, deleteFunction,groupByCategory, showProductButtons } = require('../public/utils/html');
+const admin = require('firebase-admin')
+const { authenticated } = require('../middlewares/authMiddleware')
 const path = require('path')
-const adminm = require('firebase-admin')
-// const auth = admin-auth()
+const auth = admin.auth()
 
 const authController = {
     showDashboard: async (req, res) => {
@@ -145,6 +148,72 @@ const authController = {
 };
 
 //Register
+router.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/views', 'register.html'));
+});
+router.post('/register', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+      await auth.createUser({
+        email,
+        password
+      });
+      res.redirect('/login');
+    } catch (error) {
+      console.error('Error creating new user:', error);
+      res.redirect('/register');
+    }
+});
+
+
+//login
+router.get('/', (req, res) => {
+    res.redirect('/login');
+});
+router.post('/login', async (req, res) => {
+    const { idToken } = req.body;
+    try {
+      // Verifica el ID token
+      await auth.verifyIdToken(idToken);
+  
+      // Guardar el ID token en una cookie
+      res.cookie('token', idToken, { httpOnly: true, secure: false }); // Usa secure: true en producción. Es un atributo de los navegadores para las cookies y evitar XXS
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Error verifying ID token:', error);
+      res.status(401).json({ error: 'Invalid token' });
+    }
+});
+router.post('/logout', (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/login');
+});
+
+//datos
+router.get('/datos', authenticated, (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/views', 'datos.html'));
+});
+router.get('/dashboard', authenticated, (req, res) => {
+    const mail = req.user.email
+    res.send(`
+      <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Dashboard</title>
+        </head>
+        <body>
+          <h1>Bienvenido al Dashboard ${mail}</h1>
+          <form action="/logout" method="post">
+            <button type="submit">Logout</button>
+          </form>
+        </body>
+      </html>
+    `
+    );
+});
+
 
 
 module.exports = authController;
