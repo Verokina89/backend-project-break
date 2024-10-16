@@ -20,7 +20,7 @@ const authenticated = (req, res, next) => {
     });
 };
 
-module.exports = { authenticated }
+module.exports = authenticated
 
 /*
 const verifyToken = async (req, res, next) => {

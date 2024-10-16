@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/Product')
+const Product = require('../models/Product');
 //importar las funcione del controllador d productos
 const ProductController = require('../controllers/productController');
 const authController = require('../controllers/authController');
-
+const authenticated = require('../middlewares/authMiddleware');
 // Rutas publicas
 // router.get('/', ProductController.showProducts.);
 //ruta para mostrar todos los productosraiz(home)
@@ -17,12 +17,12 @@ router.get('/category/:category', ProductController.showProductsByCategory);
 router.get('/products/:productId', ProductController.showProductById);
 
 //ruta register-login
-router.get('/register', authController.authenticated);
-router.post('/register', authController.authenticated);
+router.get('/register', authController. );
+router.post('/register', authController. );
 
-router.get('/login', authController.authenticated);
-router.post('/login', authController.authenticated);
+router.get('/login', authController. );
+router.post('/login', authController.);
 
-router.post('/logout', authController.authenticated);
+router.post('/logout', authController. );
 
 module.exports = router;
