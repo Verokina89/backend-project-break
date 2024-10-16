@@ -6,8 +6,8 @@ const path = require('path');
 const admin = require('firebase-admin');
 const {serviceAccount} = require('./config/firebase');
 dotenv.config()  //carga variables de entorno
-// const cookieParser = require('cookie-parser')
-// const cors = require("cors")
+const cookieParser = require('cookie-parser')
+const cors = require("cors")
 //Conexión a la base de datos MongoDB
 dbConnection()
 

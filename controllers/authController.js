@@ -1,4 +1,4 @@
-// const mongoose = require('mongoose')
+const mongoose = require('mongoose')
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product')
@@ -126,7 +126,6 @@ const authController = {
             res.status(500).json('Server Error');
         }
     },
-    
 
     // //elimina un producto
     deleteProduct: async (req, res) => {
@@ -146,7 +145,6 @@ const authController = {
 },
 
 };
-
 
 
 // //datos
