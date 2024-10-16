@@ -1,4 +1,5 @@
-require('dotenv').config()
+require('dotenv').config();
+
 //inicialza Firebas Admin SDK
 const serviceAccount = {
     "type":process.env.FIREBASE_TYPE,
