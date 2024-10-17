@@ -17,12 +17,12 @@ router.get('/category/:category', ProductController.showProductsByCategory);
 router.get('/products/:productId', ProductController.showProductById);
 
 //ruta register-login
-router.get('/register', ProductController.register );
-router.post('/register', ProductController.registerUser);
+router.get('/register', authController.register );
+router.post('/register', authController.registerUser);
 
-router.get('/login', ProductController.login);
-router.post('/login', ProductController.loginUser);
+router.get('/login', authController.login);
+router.post('/login', authController.loginUser);
 
-router.post('/logout', ProductController.logoutUser);
+router.post('/logout', authController.logoutUser);
 
 module.exports = router;

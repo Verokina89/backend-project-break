@@ -129,21 +129,67 @@ const authController = {
 
     // //elimina un producto
     deleteProduct: async (req, res) => {
-    try {
-        const productId = req.params.productId;
-        const deletedProduct = await Product.findByIdAndDelete(productId);
+        try {
+            const productId = req.params.productId;
+            const deletedProduct = await Product.findByIdAndDelete(productId);
 
         if (!deletedProduct) {
-            return res.status(404).send('Product not found');
+                return res.status(404).send('Product not found');
+            }
+
+            res.redirect('/dashboard');
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Server Error');
         }
+    },
 
-        res.redirect('/dashboard');
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
+    ////Bonus firebase register-login
+    //Register
+    register : async (req, res) => {
+        res.sendFile(path.join(__dirname, '../public/views', 'register.html'));
+    },
+    // Registra un nuevo usuario
+    registerUser : async (req, res) => {
+        const { email, password } = req.body;
+        try {
+            // Crear el usuario con el servicio de autenticación (Firebase o el que uses)
+            await auth.createUser({ email, password });
+
+            // Redirige al login tras el registro exitoso
+            res.redirect('/login');
+        } catch (error) {
+            console.error(`Error creating new user: ${error.message}`);
+            // En caso de error, redirige de nuevo a la página de registro
+            res.redirect('/register');
+        }
+    },
+
+    //login
+    login : async (req, res) => {
+        res.sendFile(path.join(__dirname, '../public/views', 'login.html'));
+    },
+    // Función para manejar el proceso de login
+    loginUser: async (req, res) => {
+        const { idToken } = req.body;
+        try {
+            // Verificar el ID token con el servicio de autenticación
+            await auth.verifyIdToken(idToken);
+
+            // Guardar el token en una cookie
+            res.cookie('token', idToken, { httpOnly: true, secure: false }); // En producción, usa secure: true
+            res.json({ success: true });
+        } catch (error) {
+            console.error(`Error verifying ID token: ${error.message}`);
+            res.redirect('/register');
+        }
+    },
+    // Función para manejar el proceso de logout
+    logoutUser: async (req, res) => {
+        // Eliminar la cookie del token
+        res.clearCookie('token');
+        res.redirect('/dasboard');
     }
-},
-
 };
 
 
