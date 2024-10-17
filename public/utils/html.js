@@ -77,7 +77,7 @@ const getNavBar = () => {
             <a href="/category/Accessories"> Accesorios</a>
             <a href="/category/Snack"> Snack</a>
             <a href="/dashboard">Dashboard</a>
-            <a href="/login">Login</a>
+            <a href="/register">Login</a>
         </nav>
     `;
 };
