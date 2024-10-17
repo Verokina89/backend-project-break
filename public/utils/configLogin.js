@@ -27,7 +27,7 @@ const login = async () => {
   const messageDiv = document.getElementById('message'); //div para mostrar errores
   messageDiv.textContent = ''; //limpia msn anteriores
   try {
-    //obtiene valores d mai y password
+    //obtiene valores d mail y password
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     //valida la entrada
@@ -62,4 +62,3 @@ const login = async () => {
 // Event listener para el botón de inicio de sesión
 document.getElementById('loginButton').addEventListener('click', login);
 
-export { app, auth };
