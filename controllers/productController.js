@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const Product = require('../models/Product')
 const { baseHtml, generateHtml, getProductCards, getNavBar, renderProductForm, productDetailsHtml, groupByCategory, showProductButtons } = require('../public/utils/html');
+const path = require('path');
+
 
 
 // Funciones del controlador de productos
@@ -140,7 +142,7 @@ const ProductController = {
     logoutUser: async (req, res) => {
         // Eliminar la cookie del token
         res.clearCookie('token');
-        res.redirect('/');
+        res.redirect('/dasboard');
     }
 };
 

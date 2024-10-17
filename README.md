@@ -194,7 +194,7 @@ Para poder comprobar que el controlador de productos funciona correctamente, vam
 
 Para poder usar la aplicación con un frontend en React, vamos a crear una API que haga las mismas operaciones que el controlador de productos, pero que devuelva los datos en formato JSON. Documentaremos la API con Swagger, para que sea más fácil de entender y usar.
 
-## Bonus 3 - Autenticación con Firebase
+## Bonus 3 - Autenticación con Firebase ------------> OK
 
 Crearemos un usuario administrador para que pueda subir desde el dashboard más productos. Esas rutas deberán estar protegidas para que solo pueda entrar quien esté logado y pueda acceder a esos elementos para crearlos, verlos, actualizarlos y borrarlos. 
 Podéis ver la manera de poder hacer esta autenticación con firebase aquí:
