@@ -35,6 +35,8 @@ const register = async () => {
     // Crea un nuevo usuario con Firebase
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     
+    //manejar el .then (promesa)
+
     // Obtiene el ID token del usuario registrado
     const idToken = await userCredential.user.getIdToken();
 

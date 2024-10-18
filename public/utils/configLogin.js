@@ -1,6 +1,11 @@
 // Importa las funciones necesarias desde Firebase SDK
-import { initializeApp } from "firebase/app";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+
+// import { initializeApp } from "firebase/app";
+// import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
@@ -17,7 +22,7 @@ const firebaseConfig = {
   measurementId: "G-6CHTTHBSLJ"
 };
 
-// Initialize Firebase
+// Initialize Firebase (para Firebase SDK 9.x o superior)
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const auth = getAuth(app); // Instancia de autenticación
@@ -37,6 +42,9 @@ const login = async () => {
     }
     // Autentica al usuario con Firebase
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+    //trbajar la promes
+
     // Obtiene IDtoken del usuario autenticado
     const idToken = await userCredential.user.getIdToken();
     // Envía el ID token al servidor
@@ -59,6 +67,10 @@ const login = async () => {
   }
 };
 
-// Event listener para el botón de inicio de sesión
-document.getElementById('loginButton').addEventListener('click', login);
+const loginButton = document.getElementById("loginButton")
 
+loginButton.addEventListener("click", () => {
+    login()
+    console.log("Pulsa boton");
+
+})

@@ -8,8 +8,7 @@ const {serviceAccount} = require('./config/firebase');
 dotenv.config()  //carga variables de entorno
 const cookieParser = require('cookie-parser')
 const cors = require("cors")
-//Conexión a la base de datos MongoDB
-dbConnection()
+
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -18,7 +17,6 @@ admin.initializeApp({
 const app = express()
 const productRoutes = require('./routes/productRoutes');
 const authRoutes = require('./routes/authRoutes')  //importa rutas admin (dashboard)
-
 
 //Middlewares
 app.use(cors())
@@ -31,9 +29,11 @@ app.use(methodOverride('_method')) //soportar PUT y DELETE en formularios
 
 //Ruta publica
 app.use('/', productRoutes)
-// Rutas de admin (dashboard)
+// Rutas de usuarios (dashboard)
 app.use('/dashboard', authRoutes)
 
+//Conexión a la base de datos MongoDB
+dbConnection()
 
 const PORT = process.env.PORT || 4500;
 app.listen(PORT, () => {

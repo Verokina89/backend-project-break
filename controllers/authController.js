@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product')
@@ -7,6 +7,7 @@ const admin = require('firebase-admin')
 const { authenticated } = require('../middlewares/authMiddleware')
 const path = require('path')
 const auth = admin.auth()
+// const app = require ('../config/firebase')
 
 const authController = {
     showDashboard: async (req, res) => {
@@ -171,6 +172,7 @@ const authController = {
     },
     // Función para manejar el proceso de login
     loginUser: async (req, res) => {
+        console.log(req)
         const { idToken } = req.body;
         try {
             // Verificar el ID token con el servicio de autenticación
