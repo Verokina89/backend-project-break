@@ -22,4 +22,7 @@ router.get('/:productId/edit', authenticated, authController.showEditProduct);
 // // Eliminar producto
 router.delete('/:productId/delete', authenticated, authController.deleteProduct); 
 
+//ruta cerrar session
+router.post('/logout', authController.logoutUser);
+
 module.exports = router;

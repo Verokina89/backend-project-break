@@ -67,14 +67,6 @@ const login = async () => {
   }
 };
 
-// const loginButton = document.getElementById("loginButton")
-
-// loginButton.addEventListener("click", () => {
-//   console.log("¡preciono el botoooooon!");
-  
-//     login()
-// })
-
 // Maneja evento del envío del formulario
 const loginForm = document.getElementById('loginForm');
 
@@ -106,4 +98,13 @@ const login = async () => {
 
 
 Esto solamnte hace autenticación con Firebase. Si funciona, entonce el problema esta en la parte donde ese enva el idToken al backend.
+
+
+// const loginButton = document.getElementById("loginButton")
+
+// loginButton.addEventListener("click", () => {
+//   console.log("¡preciono el botoooooon!");
+  
+//     login()
+// })
 */

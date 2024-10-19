@@ -68,35 +68,27 @@ const getProductCards = (products, isDashboard = false) => {
     `).join('');
 };
 
-const getNavBar = () => {
+//funcion que maneja el barra de navegacion
+const getNavBar = (isAuthenticated) => {
     return `
         <nav>
             <a href="/">Home</a>
-            <a href="/category/T-shirts"> Camisetas</a>
-            <a href="/category/Sweters"> Sweters</a>
-            <a href="/category/Accessories"> Accesorios</a>
-            <a href="/category/Snack"> Snack</a>
-            <a href="/dashboard">Dashboard</a>
-            <a href="/register">Login</a>
+            <a href="/category/T-shirts">Camisetas</a>
+            <a href="/category/Sweters">Suéteres</a>
+            <a href="/category/Accessories">Accesorios</a>
+            <a href="/category/Snack">Snacks</a>
+            <a href="/dashboard">Perfil</a>
+            ${isAuthenticated   //si est autenticado
+                ? ` <a href="/">Logout</a> 
+                ` : `
+                    <a href="/Register">Registrarse</a>
+                ` // Mostrar Register y Login si no está autenticado
+            }
         </nav>
     `;
 };
 
-// Función para generar el formulario de productos (editar/eliminar)
-// const renderProductForm = (product = {}) => {
-//     return `
-//         <form action="${product._id ? `/dashboard/${product._id}?_method=PUT` : '/dashboard/create'}" method="POST">
-//             <input type="text" name="name" value="${product.name || ''}" placeholder="Nombre del producto" required>
-//             <input type="text" name="description" value="${product.description || ''}" placeholder="Descripción" required>
-//             <input type="text" name="image" value="${product.image || ''}" placeholder="URL de la imagen" required>
-//             <input type="text" name="category" value="${product.category || ''}" placeholder="Categoría" required>
-//             <input type="text" name="size" value="${product.size || ''}" placeholder="Talla" required>
-//             <input type="number" name="price" value="${product.price || ''}" placeholder="Precio" required>
-//             <button type="submit">${product._id ? 'Actualizar/Volver' : 'Crear'} Producto</button>
-//             <br>
-//         </form>
-//     `;
-// };
+//function para el formulario de editar/crear productos
 const renderProductForm = (product = {}) => {
     return `
         <form action="${product._id ? `/dashboard/${product._id}?_method=PUT` : '/dashboard/create'}" method="POST">
@@ -265,5 +257,19 @@ module.exports = {
 //     }).join(''); //une todas las tarjetas en un solo string
 // };
 
-
+// Función para generar el formulario de productos (editar/eliminar)
+// const renderProductForm = (product = {}) => {
+//     return `
+//         <form action="${product._id ? `/dashboard/${product._id}?_method=PUT` : '/dashboard/create'}" method="POST">
+//             <input type="text" name="name" value="${product.name || ''}" placeholder="Nombre del producto" required>
+//             <input type="text" name="description" value="${product.description || ''}" placeholder="Descripción" required>
+//             <input type="text" name="image" value="${product.image || ''}" placeholder="URL de la imagen" required>
+//             <input type="text" name="category" value="${product.category || ''}" placeholder="Categoría" required>
+//             <input type="text" name="size" value="${product.size || ''}" placeholder="Talla" required>
+//             <input type="number" name="price" value="${product.price || ''}" placeholder="Precio" required>
+//             <button type="submit">${product._id ? 'Actualizar/Volver' : 'Crear'} Producto</button>
+//             <br>
+//         </form>
+//     `;
+// };
  */

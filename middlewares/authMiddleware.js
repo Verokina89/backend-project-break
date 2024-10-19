@@ -11,7 +11,7 @@ const authenticated = (req, res, next) => {
 
   auth.verifyIdToken(idToken)
     .then(decodedToken => {
-      req.user = decodedToken;
+      req.user = decodedToken; //guarda la información del usuario en req.use
       next();
     })
     .catch(error => {

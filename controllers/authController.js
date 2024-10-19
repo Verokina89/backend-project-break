@@ -12,8 +12,20 @@ const auth = admin.auth()
 const authController = {
     showDashboard: async (req, res) => {
         try {
+            // Verificar si el usuario tiene una cookie de token de autenticación
+            const isAuthenticated = req.cookies.token ? true : false;
+
+
             // Obtener todos los productos de la base de datos
             const products = await Product.find();
+            
+            // Enviar el archivo dashboard.html si el usuario está autenticado
+            if (isAuthenticated) {
+                res.sendFile(path.join(__dirname, '../public/views', 'dashboard.html'));
+            } else {
+                res.redirect('/login'); // Redirigir a login si no está autenticado
+            }
+
             
             // Validar si existen productos
             if (!products || products.length === 0) {
@@ -24,7 +36,7 @@ const authController = {
             const productCards = getProductCards(products,true);
             // Crear el HTML completo con el navbar y las tarjetas de productos
             const html = generateHtml(`
-                ${getNavBar()}
+                ${getNavBar(isAuthenticated)}
                 ${productCards}
             `);
             // Enviar el HTML generado al cliente
@@ -152,7 +164,7 @@ const authController = {
     },
     // Registra un nuevo usuario
     registerUser : async (req, res) => {
-        const { email, password } = req.body;
+        const { email, password } = req.body; //obtiene correo y contraseña
         try {
             // Crear el usuario con el servicio de autenticación (Firebase o el que uses)
             await auth.createUser({ email, password });
@@ -161,8 +173,24 @@ const authController = {
             res.redirect('/login');
         } catch (error) {
             console.error(`Error creating new user: ${error.message}`);
-            // En caso de error, redirige de nuevo a la página de registro
-            res.redirect('/register');
+            // Verificar si el error es porque el email ya está en uso
+            if (error.code === 'auth/email-already-exists') {
+                // Si el email ya está registrado, redirigir a login y mostrar mensaje
+                res.send(`
+                    <script>
+                        alert('correo ya registrado. Pudes inicia sesión.');
+                        window.location.href = '/login';
+                    </script>
+                `);
+            } else {
+                // En caso de otro tipo de errores, redirige nuevamente a registro
+                res.send(`
+                    <script>
+                        alert('Hubo un error en el registro, intenta nuevamente.');
+                        window.location.href = '/register';
+                    </script>
+                `);
+            }
         }
     },
 
@@ -190,9 +218,44 @@ const authController = {
     logoutUser: async (req, res) => {
         // Eliminar la cookie del token
         res.clearCookie('token');
-        res.redirect('/dasboard');
+        res.redirect('/');
     }
 };
+
+
+module.exports = authController;
+
+
+
+
+
+
+/*
+showDashboard: async (req, res) => {
+        try {
+            // Obtener todos los productos de la base de datos
+            const products = await Product.find();
+            
+            // Validar si existen productos
+            if (!products || products.length === 0) {
+                return res.status(404).send('No products found');
+            }
+            //genera las tarjetas de productos agrupados por categria para mostrar en el dashboard pasando false
+            const productCards = getProductCards(products, false);
+            //HTML completo con navbar y las tarjetas de productos
+            const html = generateHtml(`
+                ${getNavBar()}
+                ${productCards}
+            `);
+            //muestra HTML
+            res.send(html);
+        } catch (error) {
+            console.error(error);
+            res.status(500).send('Error obtaining the products');
+        }
+},
+
+
 
 
 // //datos
@@ -219,35 +282,4 @@ const authController = {
 //     `
 //     );
 // });
-
-
-
-module.exports = authController;
-
-
-/*
-showDashboard: async (req, res) => {
-        try {
-            // Obtener todos los productos de la base de datos
-            const products = await Product.find();
-            
-            // Validar si existen productos
-            if (!products || products.length === 0) {
-                return res.status(404).send('No products found');
-            }
-            //genera las tarjetas de productos agrupados por categria para mostrar en el dashboard pasando false
-            const productCards = getProductCards(products, false);
-            //HTML completo con navbar y las tarjetas de productos
-            const html = generateHtml(`
-                ${getNavBar()}
-                ${productCards}
-            `);
-            //muestra HTML
-            res.send(html);
-        } catch (error) {
-            console.error(error);
-            res.status(500).send('Error obtaining the products');
-        }
-    },
-
     */

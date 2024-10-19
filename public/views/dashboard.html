@@ -4,11 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard</title>
+  <!-- Scripts de Firebase desde CDN -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js"></script>
 </head>
 <body>
+  
   <h1>Bienvenido al Dashboard</h1>
+  
   <form action="/logout" method="post">
     <button type="submit">Logout</button>
   </form>
+  <script type="module" src="../utils/configLogin.js"></script>
 </body>
 </html>
