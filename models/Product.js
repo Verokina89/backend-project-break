@@ -20,7 +20,7 @@ const ProductSchema = new mongoose.Schema({
     },
     size: { 
         type: String,
-        enum: ['XS', 'S', 'M', 'L', 'XL', 'xs', 's', 'm', 'l', 'xl'], 
+        enum: ['XS', 'S', 'M', 'L', 'XL', 'xs', 's', 'm', 'l', 'xl', 'ALLS'], 
         required: true 
     },
     price: { 

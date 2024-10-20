@@ -50,6 +50,21 @@ const generateHtml = (content) => {
     `;
 };
 
+const generateHtmlNew = (content) => {
+    return `<!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Crear Nuevo Producto</title>
+    </head>
+    <body>
+        <h1>Crear Nuevo Producto</h1>
+        ${content} <!-- Aquí se inserta el formulario -->
+    </body>
+    </html>
+    `;
+};
 
 const getProductCards = (products, isDashboard = false) => {
     return products.map(product => `
@@ -68,6 +83,7 @@ const getProductCards = (products, isDashboard = false) => {
     `).join('');
 };
 
+
 //funcion que maneja el barra de navegacion
 const getNavBar = (isAuthenticated) => {
     return `
@@ -79,8 +95,11 @@ const getNavBar = (isAuthenticated) => {
             <a href="/category/Snack">Snacks</a>
             <a href="/dashboard">Perfil</a>
             ${isAuthenticated   //si est autenticado
-                ? ` <a href="/">Logout</a> 
-                ` : `
+                ? ` 
+                    <a href="/dashboard/create">Crear Producto</a>
+                    <a href="/">Logout</a>
+                ` 
+                : `
                     <a href="/Register">Registrarse</a>
                 ` // Mostrar Register y Login si no está autenticado
             }
@@ -122,8 +141,6 @@ const renderProductForm = (product = {}) => {
         </form>
     `;
 };
-
-
 
 // Crear el HTML para mostrar los detalles del producto
 const productDetailsHtml = (product = {}) => {
@@ -200,6 +217,7 @@ const groupByCategory = (products) => {
 module.exports = {
     baseHtml,
     generateHtml,
+    generateHtmlNew,
     getProductCards,
     getNavBar,
     renderProductForm,

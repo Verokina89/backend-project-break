@@ -12,9 +12,11 @@ router.get('/:productById', authenticated, authController.dashboardById);
 
 //Rutas para crear, editar, y borrar
 //dvelve el formulario del nuevo producto
-router.get('/new', authenticated, authController.showNewProduct); 
+router.get('/new', authController.showNewProduct); 
+
 //crea el nuevo producto
 router.post('/create', authenticated, authController.createProduct);
+
 //Actualizar producto
 router.put('/:productId', authenticated, authController.updateProduct); 
 //muestra un formulario para editar el producto selecionado
