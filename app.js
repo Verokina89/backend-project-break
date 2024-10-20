@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser')
 const cors = require("cors")
 const swaggerUI = require('swagger-ui-express')
 const docs = require('./docs/index')
+
 dotenv.config()  //carga variables de entorno
 
 admin.initializeApp({
@@ -17,24 +18,25 @@ admin.initializeApp({
 
 const app = express()
 const productRoutes = require('./routes/productRoutes');
-const authRoutes = require('./routes/authRoutes')  //importa rutas admin (dashboard)
-const apiRoutes = ('./routes/apiProductsRoutes')
+const authRoutes = require('./routes/authRoutes')  
+const apiRoutes = require('./routes/apiProductsRoutes');
 
 //Middlewares
 app.use(cors())
 app.use(express.json())  
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(express.static(path.join(__dirname,"public")));  //servir archivos estaticos como  HTML,CSS, js e imágenes
+app.use(express.static(path.join(__dirname,"public")));  //servir archivos estaticos; HTML,CSS, js e imágenes
 
 app.use(methodOverride('_method')) //soportar PUT y DELETE en formularios
 
-app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(docs))
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(docs));
 
 //Ruta publica
 app.use('/', productRoutes)
 // Rutas de usuarios (dashboard)
 app.use('/dashboard', authRoutes)
+
 //ruta API
 app.use('/apiproducts', apiRoutes)
 

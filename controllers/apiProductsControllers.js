@@ -1,8 +1,20 @@
 const Products = require('../models/Product')
 
 const apiProductsControllers = {
+    // Obtener todos los productos
+    getShowProducts : async(req,res) =>{
+        try{
+            const products = await Product.find()
+            return res.json(products);
+
+        }catch (err) {
+            // console.error(error);
+            res.status(500).send(err)
+        }
+    },
+
     //crea un producto
-    createProducts : async(req,res) => {
+    createProduct : async(req,res) => {
         try {
             const { name, description, image, category,size, price } = req.body;
             if (!name || !description || !image || !category || !size || !price) {
@@ -16,17 +28,7 @@ const apiProductsControllers = {
         }
     },
     
-    // Obtener todos los productos
-    getShowProducts : async(req,res) =>{
-        try{
-            const products = await Product.find()
-            return res.json(products);
-
-        }catch (err) {
-            // console.error(error);
-            res.status(500).send(err)
-        }
-    },
+    
     showProductById : async(req,res) => {
         try {
             const { productId } = req.params;
