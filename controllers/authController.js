@@ -10,6 +10,31 @@ const auth = admin.auth()
 // const app = require ('../config/firebase')
 
 const authController = {
+    // // Crear un producto nuevo
+    createProduct: async (req, res) => {
+        try {
+            const { name, price, description } = req.body;
+    
+            // Verificar que los campos esenciales estén presentes
+            if (!name || !price || !description) {
+                return res.status(400).send('All fields are required');
+            }
+    
+            // Crear el nuevo producto
+            const newProduct = new Product(req.body);
+            await newProduct.save();
+            //mensaje creacion del nuevo producto con exito
+        res.status(200).json({
+            message: 'Product created successfully',
+            product: newProduct // Devuelve el producto creado
+            })    
+            // res.redirect(`/products/${newProduct._id}`);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send('Server error');
+        }
+    },
+    
     showDashboard: async (req, res) => {
         try {
             // Verificar si el usuario tiene una cookie de token de autenticación
@@ -80,30 +105,7 @@ const authController = {
         res.send(generateHtml(renderProductForm())); // Renderizar formulario vacio
     },
 
-    // // Crear un producto nuevo
-    createProduct: async (req, res) => {
-        try {
-            const { name, price, description } = req.body;
     
-            // Verificar que los campos esenciales estén presentes
-            if (!name || !price || !description) {
-                return res.status(400).send('All fields are required');
-            }
-    
-            // Crear el nuevo producto
-            const newProduct = new Product(req.body);
-            await newProduct.save();
-            //mensaje creacion del nuevo producto con exito
-        res.status(200).json({
-            message: 'Product created successfully',
-            product: newProduct // Devuelve el producto creado
-            })    
-            // res.redirect(`/products/${newProduct._id}`);
-        } catch (err) {
-            console.error(err);
-            res.status(500).send('Server error');
-        }
-    },
 
      //muestra el formulario de edit para producto existente
      showEditProduct: async (req, res) => {
