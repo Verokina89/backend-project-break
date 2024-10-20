@@ -68,40 +68,33 @@ const authController = {
     },
 
     //devuelve el formulario de creación de producto
-    // showNewProduct: (req, res) => {
-    //     res.send(generateHtml(renderProductForm())); // Renderizar formulario vacio
-    // },
     showNewProduct: (req, res) => {
-        res.send(`
-            <form action="/dashboard/new" method="POST">
-                <input type="text" name="name" placeholder="Product Name" />
-                <input type="text" name="description" placeholder="Product Description" />
-                <input type="text" name="price" placeholder="Product Price" />
-                <button type="submit">Create Product</button>
-            </form>
-        `);
+        res.send(generateHtml(renderProductForm())); // Renderizar formulario vacio
     },
-
+  
      // Crear un producto nuevo
-     createProduct: async (req, res) => {
+    createProduct: async (req, res) => {
         try {
             const { name, description, image, category, size, price } = req.body;
-    
             if (!name || !description || !image || !category || !size || !price) {
                 return res.status(400).send('All fields are required');
             }
-            const newProduct = new Product(req.body);
+            const newProduct = new Product({
+                name,
+                description,
+                image,
+                category,
+                size,
+                price
+            });
             await newProduct.save();
-            // res.status(200).json({
-            //     message: 'Product created successfully',
-            //     product: newProduct
-            // });
             res.redirect('/dashboard');
         } catch (err) {
             console.error(err);
             res.status(500).send('Server error');
         }
     },
+
      //muestra el formulario de edit para producto existente
      showEditProduct: async (req, res) => {
         try {
@@ -221,45 +214,3 @@ const authController = {
 
 
 module.exports = authController;
-
-
-
-
-/*
-// showDashboard: async (req, res) => {
-    //     try {
-    //         // Verificar si el usuario tiene una cookie de token de autenticación
-    //         const isAuthenticated = req.cookies.token ? true : false;
-
-
-    //         // Obtener todos los productos de la base de datos
-    //         const products = await Product.find();
-            
-    //         // Enviar el archivo dashboard.html si el usuario está autenticado
-    //         if (isAuthenticated) {
-    //             res.sendFile(path.join(__dirname, '../public/views', 'dashboard.html'));
-    //         } else {
-    //             res.redirect('/login'); // Redirigir a login si no está autenticado
-    //         }
-            
-    //         // Validar si existen productos
-    //         if (!products || products.length === 0) {
-    //             return res.status(404).send('No products found');
-    //         }
-    
-    //         //genera las tarjetas de los productos para mostrar en el dashboard pasando true
-    //         const productCards = getProductCards(products,true);
-    //         // Crear el HTML completo con el navbar y las tarjetas de productos
-    //         const html = generateHtml(`
-    //             ${getNavBar(isAuthenticated)}
-    //             ${productCards}
-    //         `);
-    //         // Enviar el HTML generado al cliente
-    //         res.send(html);
-    //     } catch (error) {
-    //         console.error(error);
-    //         res.status(500).send('Error obtaining the products');
-    //     }
-    // },
-
-*/

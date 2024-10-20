@@ -60,7 +60,7 @@ const generateHtmlNew = (content) => {
     </head>
     <body>
         <h1>Crear Nuevo Producto</h1>
-        ${content} <!-- Aquí se inserta el formulario -->
+        ${content} 
     </body>
     </html>
     `;

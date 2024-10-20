@@ -7,15 +7,17 @@ const authenticated = require('../middlewares/authMiddleware')
 //Mostrar el dashboard con los productos
 router.get('/', authenticated, authController.showDashboard);
 
-//devuel el detalle de un producto en el dashboard con botones editar y borrar
-router.get('/:productById', authenticated, authController.dashboardById); 
-
 //Rutas para crear, editar, y borrar
 //dvelve el formulario del nuevo producto
 router.get('/new', authController.showNewProduct); 
 
 //crea el nuevo producto
 router.post('/new', authenticated, authController.createProduct);
+
+//devuel el detalle de un producto en el dashboard con botones editar y borrar
+router.get('/:productById', authenticated, authController.dashboardById); 
+
+
 
 //Actualizar producto
 router.put('/:productId', authenticated, authController.updateProduct); 
