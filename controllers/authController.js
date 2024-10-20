@@ -73,7 +73,7 @@ const authController = {
     // },
     showNewProduct: (req, res) => {
         res.send(`
-            <form action="/dashboard/create" method="POST">
+            <form action="/dashboard/new" method="POST">
                 <input type="text" name="name" placeholder="Product Name" />
                 <input type="text" name="description" placeholder="Product Description" />
                 <input type="text" name="price" placeholder="Product Price" />
@@ -85,11 +85,11 @@ const authController = {
      // Crear un producto nuevo
      createProduct: async (req, res) => {
         try {
-            // const { name, description, image, category, size, price } = req.body;
+            const { name, description, image, category, size, price } = req.body;
     
-            // if (!name || !description || !image || !category || !size || !price) {
-            //     return res.status(400).send('All fields are required');
-            // }
+            if (!name || !description || !image || !category || !size || !price) {
+                return res.status(400).send('All fields are required');
+            }
             const newProduct = new Product(req.body);
             await newProduct.save();
             // res.status(200).json({

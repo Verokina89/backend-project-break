@@ -96,7 +96,7 @@ const getNavBar = (isAuthenticated) => {
             <a href="/dashboard">Perfil</a>
             ${isAuthenticated   //si est autenticado
                 ? ` 
-                    <a href="/dashboard/create">Crear Producto</a>
+                    <a href="/dashboard/new">Crear Producto</a>
                     <a href="/">Logout</a>
                 ` 
                 : `
@@ -110,7 +110,7 @@ const getNavBar = (isAuthenticated) => {
 //function para el formulario de editar/crear productos
 const renderProductForm = (product = {}) => {
     return `
-        <form action="${product._id ? `/dashboard/${product._id}?_method=PUT` : '/dashboard/create'}" method="POST">
+        <form action="${product._id ? `/dashboard/${product._id}?_method=PUT` : '/dashboard/new'}" method="POST">
             <div style="margin-bottom: 10px;">
                 <!-- Indicaciones o esquemas de ejemplo -->
                 <p><strong>Esquema de Producto:</strong></p>

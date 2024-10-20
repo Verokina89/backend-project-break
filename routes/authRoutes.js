@@ -15,7 +15,7 @@ router.get('/:productById', authenticated, authController.dashboardById);
 router.get('/new', authController.showNewProduct); 
 
 //crea el nuevo producto
-router.post('/create', authenticated, authController.createProduct);
+router.post('/new', authenticated, authController.createProduct);
 
 //Actualizar producto
 router.put('/:productId', authenticated, authController.updateProduct); 
