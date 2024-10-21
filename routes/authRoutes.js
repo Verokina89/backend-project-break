@@ -17,8 +17,6 @@ router.post('/new', authenticated, authController.createProduct);
 //devuel el detalle de un producto en el dashboard con botones editar y borrar
 router.get('/:productById', authenticated, authController.dashboardById); 
 
-
-
 //Actualizar producto
 router.put('/:productId', authenticated, authController.updateProduct); 
 //muestra un formulario para editar el producto selecionado
